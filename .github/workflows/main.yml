@@ -5,7 +5,7 @@ on:
     types: started
   schedule:
   - cron: '30/5 12 * * *'
-  - cron: '0-30/5 13 * * *'
+  - cron: '0-15/5 13 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
