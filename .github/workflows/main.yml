@@ -4,8 +4,7 @@ on:
   watch:
     types: started
   schedule:
-  - cron: '30/10 12 * * *'
-  - cron: '0-10/5 13 * * *'
+  - cron: '30-*/5 12 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
