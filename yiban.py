@@ -17,10 +17,8 @@ class Yiban:
         self.password = password
         self.session = requests.session()
         # 从https://lbs.amap.com/tools/picker 寻找宿舍经纬度
-        #LNGLAT=os.environ["LNGLAT"]
-        #ADDRESS=os.environ["ADDRESS"]
-        LNGLAT="102.449018,24.875743"
-        ADDRESS="云南省 昆明市 安宁市县街街道昆明冶金高等专科学校-教学大楼"
+        LNGLAT=os.environ["LNGLAT"]
+        ADDRESS=os.environ["ADDRESS"]
         self.night_sgin ='{"Reason":"","AttachmentFileName":"","LngLat":"%s","Address":"%s"}' %(LNGLAT,ADDRESS)
         
     def request(self, url, method="get", params=None, cookies=None):
@@ -48,7 +46,7 @@ class Yiban:
             except Exception as e:
                 print("出现了意料之外的错误")
                 print(str(e))
-        return response.json()
+        return json.loads(response.text)
         
     def login(self):
         params = {
