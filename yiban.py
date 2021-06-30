@@ -6,7 +6,7 @@ import time
 import os
 
 # 代码部分参考自https://hub.fastgit.org/rookiesmile/yibanAutoSgin
-class yiban:
+class Yiban:
     CSRF = "64b5c616dc98779ee59733e63de00dd5"
     COOKIES = {"csrf_token": CSRF}
     HEADERS = {"Origin": "https://c.uyiban.com", "User-Agent": "YiBan"}
@@ -39,12 +39,15 @@ class yiban:
             return response
         
     def auth(self) -> json:
-        location = self.session.get("http://f.yiban.cn/iapp/index?act=iapp7463&v=" + self.access_token,
-                                    allow_redirects=False).headers["Location"]
-        verifyRequest = re.findall(r"verify_request=(.*?)&", location)[0]
+        location = self.session.get("http://f.yiban.cn/iapp7463?access_token=" + self.access_token + "&v_time=" + str(int(round(time.time() * 100000))),
+                                    allow_redirects=False, cookies=self.COOKIES)
+        # 二次重定向
+        act = self.session.get("https://f.yiban.cn/iapp/index?act=iapp7463", allow_redirects=False, cookies=self.COOKIES).headers["Location"]
+        verifyRequest = re.findall(r"verify_request=(.*?)&", act)[0]
         response = self.request(
             "https://api.uyiban.com/base/c/auth/yiban?verifyRequest=" + verifyRequest + "&CSRF=" + self.CSRF,
             cookies=self.COOKIES)
+        self.name = response["data"]["PersonName"]
         return response
         
     def request(self, url, method="get", params=None, cookies=None):
@@ -68,7 +71,7 @@ class yiban:
         params = {
             "Code": "",
             "PhoneModel": "",
-            "SignInfo": info,
+            "SignInfo": reason,
             "OutState": "1"
         }
         response = self.request("https://api.uyiban.com/nightAttendance/student/index/signIn?CSRF=" + self.CSRF,
