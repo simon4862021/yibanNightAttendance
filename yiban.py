@@ -23,10 +23,29 @@ class Yiban:
         
     def request(self, url, method="get", params=None, cookies=None):
         if method == "get":
-            response = self.session.get(url=url, timeout=10, headers=self.HEADERS, params=params, cookies=cookies)
+            try:
+                response= self.session.get(url, timeout=10, headers=self.HEADERS, params=params, cookies=cookies)
+            except requests.exceptions.Timeout as e:
+                print("连接超时")
+            except requests.exceptions.ConnectionError as e:
+                print("网络异常")
+            except requests.exceptions.HTTPError as e:
+                print("返回了不成功的状态码")
+            except Exception as e:
+                print("出现了意料之外的错误")
+                print(str(e))
         else:
-            response = self.session.post(url=url, timeout=10, headers=self.HEADERS, data=params, cookies=cookies)
-
+            try:
+                response = self.session.post(url=url, timeout=10, headers=self.HEADERS, data=params, cookies=cookies)
+            except requests.exceptions.Timeout as e:
+                print("连接超时")
+            except requests.exceptions.ConnectionError as e:
+                print("网络异常")
+            except requests.exceptions.HTTPError as e:
+                print("返回了不成功的状态码")
+            except Exception as e:
+                print("出现了意料之外的错误")
+                print(str(e))
         return response.json()
         
     def login(self):
@@ -70,7 +89,7 @@ class Yiban:
         params = {
             "Code": "",
             "PhoneModel": "",
-            "SignInfo": reason,
+            "SignInfo": info,
             "OutState": "1"
         }
         response = self.request("https://api.uyiban.com/nightAttendance/student/index/signIn?CSRF=" + self.CSRF,
