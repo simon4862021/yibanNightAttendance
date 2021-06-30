@@ -21,6 +21,14 @@ class Yiban:
         ADDRESS=os.environ["ADDRESS"]
         self.night_sgin ='{"Reason":"","AttachmentFileName":"","LngLat":"%s","Address":"%s"}' %(LNGLAT,ADDRESS)
         
+    def request(self, url, method="get", params=None, cookies=None):
+        if method == "get":
+            response = self.session.get(url=url, timeout=10, headers=self.HEADERS, params=params, cookies=cookies)
+        else:
+            response = self.session.post(url=url, timeout=10, headers=self.HEADERS, data=params, cookies=cookies)
+
+        return response.json()
+        
     def login(self):
         params = {
             "mobile": self.mobile,
@@ -49,15 +57,6 @@ class Yiban:
             cookies=self.COOKIES)
         self.name = response["data"]["PersonName"]
         return response
-        
-    def request(self, url, method="get", params=None, cookies=None):
-        if method == "get":
-            response = self.session.get(url=url, timeout=10, headers=self.HEADERS, params=params, cookies=cookies)
-        elif method == "post":
-            response = self.session.post(url=url, timeout=10, headers=self.HEADERS, data=params, cookies=cookies)
-
-        return response.json()
-
 
     def deviceState(self):
         return self.request(url="https://api.uyiban.com/nightAttendance/student/index/deviceState?CSRF=" + self.CSRF,
@@ -81,7 +80,7 @@ class Yiban:
     def setall(self):
         self.login()
         self.auth()
-        # self.deviceState() 实际签到时不需要
+        self.deviceState()
         time.sleep(1)
         self.sginPostion()
         time.sleep(1)
@@ -101,6 +100,11 @@ def main():
         status = yb_list[i].setall()
         print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         print(status)
+        if status["code"] == 0:
+            print("位置签到提交成功！")
+        else:
+            print("失败！")
+            break
         time.sleep(1)
     
 if __name__ == '__main__':
