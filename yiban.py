@@ -6,7 +6,7 @@ import time
 import os
 
 # 代码部分参考自https://hub.fastgit.org/rookiesmile/yibanAutoSgin
-class Yiban:
+class yiban:
     CSRF = "64b5c616dc98779ee59733e63de00dd5"
     COOKIES = {"csrf_token": CSRF}
     HEADERS = {"Origin": "https://c.uyiban.com", "User-Agent": "YiBan"}
