@@ -46,7 +46,7 @@ class Yiban:
             except Exception as e:
                 print("出现了意料之外的错误")
                 print(str(e))
-        return json.loads(response.text)
+        return response
         
     def login(self):
         params = {
@@ -56,6 +56,7 @@ class Yiban:
         }
         # 新的登录接口
         response = self.request("https://mobile.yiban.cn/api/v3/passport/login", params=params, cookies=self.COOKIES)
+        response=json.loads(response.text)
         if response is not None and response["response"] == 100:
             self.access_token = response["data"]["user"]["access_token"]
             self.HEADERS["Authorization"] = "Bearer " + self.access_token
@@ -74,16 +75,21 @@ class Yiban:
         response = self.request(
             "https://api.uyiban.com/base/c/auth/yiban?verifyRequest=" + verifyRequest + "&CSRF=" + self.CSRF,
             cookies=self.COOKIES)
+        response=json.loads(response.text)
         self.name = response["data"]["PersonName"]
         return response
 
     def deviceState(self):
-        return self.request(url="https://api.uyiban.com/nightAttendance/student/index/deviceState?CSRF=" + self.CSRF,
+        response=self.request(url="https://api.uyiban.com/nightAttendance/student/index/deviceState?CSRF=" + self.CSRF,
                             cookies=self.COOKIES)
+        response=json.loads(response.text)
+        return response
 
     def sginPostion(self):
-        return self.request(url="https://api.uyiban.com/nightAttendance/student/index/signPosition?CSRF=" + self.CSRF,
+        response=self.request(url="https://api.uyiban.com/nightAttendance/student/index/signPosition?CSRF=" + self.CSRF,
                             cookies=self.COOKIES)
+        response=json.loads(response.text)
+        return response
     
     def nightAttendance(self, info) -> json:
         params = {
@@ -94,6 +100,7 @@ class Yiban:
         }
         response = self.request("https://api.uyiban.com/nightAttendance/student/index/signIn?CSRF=" + self.CSRF,
                                 method="post", params=params, cookies=self.COOKIES)
+        response=json.loads(response.text)
         return response
         
     def setall(self):
