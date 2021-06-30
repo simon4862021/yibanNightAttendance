@@ -56,9 +56,9 @@ class Yiban:
         }
         # 新的登录接口
         response = self.request("https://mobile.yiban.cn/api/v3/passport/login", params=params, cookies=self.COOKIES)
+        print(response.text)
         print(response.content)
-        print(type(response.content))
-        print(type(response.content.decode()))
+        print(response.content.decode())
         response=json.loads(response.content.decode())
         if response is not None and response["response"] == 100:
             self.access_token = response["data"]["user"]["access_token"]
