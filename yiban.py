@@ -6,10 +6,11 @@ import time
 import os
 
 # 代码部分参考自https://hub.fastgit.org/rookiesmile/yibanAutoSgin
-class yiban:
+class Yiban:
     CSRF = "64b5c616dc98779ee59733e63de00dd5"
     COOKIES = {"csrf_token": CSRF}
-    HEADERS = {"Origin": "https://c.uyiban.com", "User-Agent": "yiban_iOS/4.9.4"}
+    HEADERS = {"Origin": "https://c.uyiban.com", "User-Agent": "YiBan"}
+    EMAIL = {}
     
     def __init__(self, mobile, password):
         self.mobile = mobile
@@ -26,10 +27,13 @@ class yiban:
             "password": self.password,
             "imei": "0",
         }
-        # 登录接口
+        # 新的登录接口
         response = self.request("https://mobile.yiban.cn/api/v3/passport/login", params=params, cookies=self.COOKIES)
         if response is not None and response["response"] == 100:
             self.access_token = response["data"]["user"]["access_token"]
+            self.HEADERS["Authorization"] = "Bearer " + self.access_token
+            # 增加cookie
+            self.COOKIES["loginToken"] = self.access_token
             return response
         else:
             return response
