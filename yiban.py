@@ -72,7 +72,8 @@ class Yiban:
         
     def auth(self) -> json:
 #         location = self.session.get("http://f.yiban.cn/iapp7463" + "?v_time=" + str(int(round(time.time() * 100000))))
-        act = self.session.get("https://f.yiban.cn/iapp/index?act=iapp7463", allow_redirects=False, cookies=self.COOKIES)
+#         act = self.session.get("https://f.yiban.cn/iapp/index?act=iapp7463", allow_redirects=False, cookies=self.COOKIES)
+        act = self.session.get("https://f.yiban.cn/iapp/index", allow_redirects=False, cookies=self.COOKIES)
         print("act:",act.headers)
         verifyRequest = re.findall(r"verify_request=(.*?)&",act.headers['Location'])[0]
         self.HEADERS.update({
