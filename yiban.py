@@ -136,10 +136,10 @@ class Yiban:
     def setall(self):
         self.login()
         self.auth()
-        self.deviceState()
-        time.sleep(1)
-        self.sginPostion()
-        time.sleep(1)
+        #self.deviceState()
+        #time.sleep(1)
+        #self.sginPostion()
+        #time.sleep(1)
         status = self.nightAttendance(self.night_sgin)
         return status
 
