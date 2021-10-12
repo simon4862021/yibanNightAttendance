@@ -9,7 +9,11 @@ import os
 class Yiban:
     CSRF = "64b5c616dc98779ee59733e63de00dd5"
     COOKIES = {"csrf_token": CSRF}
-    HEADERS = {"Origin": "'https://m.yiban.cn", 'AppVersion': '5.0.1', "User-Agent": "YiBan/5.0.1"}
+    HEADERS = {
+        'Origin': 'https://mobile.yiban.cn',
+        'User-Agent': 'YiBan/5.0.1 Mozilla/5.0 (Linux; Android 7.1.2; V1938T Build/N2G48C; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/68.0.3440.70 Safari/537.36',
+        'Referer': 'https://mobile.yiban.cn',
+        'AppVersion': '5.0.1'}
     EMAIL = {}
     
     def __init__(self, mobile, password):
@@ -47,7 +51,7 @@ class Yiban:
                 print("出现了意料之外的错误")
                 print(str(e))
         return response.json()
-        
+    
     def login(self):
         params = {
             "mobile": self.mobile,
@@ -69,9 +73,8 @@ class Yiban:
     def auth(self) -> json:
 #         location = self.session.get("http://f.yiban.cn/iapp7463" + "?v_time=" + str(int(round(time.time() * 100000))))
         act = self.session.get("https://f.yiban.cn/iapp/index?act=iapp7463", allow_redirects=False, cookies=self.COOKIES)
-        print("act:",act.text)
-        print("str(act):",str(act).text)
-        verifyRequest = re.findall(r"verify_request=(.*?)&",str(act))[0]
+        print("act:",act.headers['Location'])
+        verifyRequest = re.findall(r"verify_request=(.*?)&",act.headers['Location'])[0]
         self.HEADERS.update({
             'origin': 'https://app.uyiban.com',
             'referer': 'https://app.uyiban.com/',
