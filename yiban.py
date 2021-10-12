@@ -67,8 +67,8 @@ class Yiban:
             return response
         
     def auth(self) -> json:
-        location = self.session.get("http://f.yiban.cn/iapp7463" + "?v_time=" + str(int(round(time.time() * 100000))))
-        act = self.session.get("https://f.yiban.cn/iapp/index?act=iapp7463", allow_redirects=False, cookies=self.COOKIES).headers["Location"]
+#         location = self.session.get("http://f.yiban.cn/iapp7463" + "?v_time=" + str(int(round(time.time() * 100000))))
+        act = self.session.get("https://f.yiban.cn/iapp/index?act=iapp7463", allow_redirects=False, cookies=self.COOKIES)
         verifyRequest = re.findall(r"verify_request=(.*?)&", act)[0]
         self.HEADERS.update({
             'origin': 'https://app.uyiban.com',
