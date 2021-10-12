@@ -4,6 +4,9 @@ import json
 import re
 import time
 import os
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_v1_5
+import base64
 
 # 代码部分参考自https://hub.fastgit.org/rookiesmile/yibanAutoSgin
 class Yiban:
