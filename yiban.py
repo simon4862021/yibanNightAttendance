@@ -9,7 +9,7 @@ import os
 class Yiban:
     CSRF = "64b5c616dc98779ee59733e63de00dd5"
     COOKIES = {"csrf_token": CSRF}
-    HEADERS = {"Origin": "https://c.uyiban.com", "User-Agent": "YiBan"}
+    HEADERS = {"Origin": "'https://m.yiban.cn", 'AppVersion': '5.0.1', "User-Agent": "YiBan/5.0.1"}
     EMAIL = {}
     
     def __init__(self, mobile, password):
@@ -24,7 +24,7 @@ class Yiban:
     def request(self, url, method="get", params=None, cookies=None):
         if method == "get":
             try:
-                response= self.session.get(url, timeout=10, headers=self.HEADERS, params=params, cookies=cookies)
+                response= self.session.get(url=url, timeout=10, headers=self.HEADERS, params=params, cookies=cookies)
             except requests.exceptions.Timeout as e:
                 print("连接超时")
             except requests.exceptions.ConnectionError as e:
@@ -46,22 +46,19 @@ class Yiban:
             except Exception as e:
                 print("出现了意料之外的错误")
                 print(str(e))
-        return response
+        return response.json()
         
     def login(self):
         params = {
             "mobile": self.mobile,
             "password": self.password,
-            "imei": "0",
+            "ct": "2",
+            "identify": "0",
         }
         # 新的登录接口
-        response = self.request("https://mobile.yiban.cn/api/v3/passport/login", params=params, cookies=self.COOKIES)
-        print(response.text)
-        print(response.content)
-        print(response.content.decode())
-        response=json.loads(response.content.decode())
+        response = self.request("https://mobile.yiban.cn/api/v4/passport/login", method="post", params=params,cookies=self.COOKIES)
         if response is not None and response["response"] == 100:
-            self.access_token = response["data"]["user"]["access_token"]
+            self.access_token = response["data"]["access_token"]
             self.HEADERS["Authorization"] = "Bearer " + self.access_token
             # 增加cookie
             self.COOKIES["loginToken"] = self.access_token
@@ -70,15 +67,17 @@ class Yiban:
             return response
         
     def auth(self) -> json:
-        location = self.session.get("http://f.yiban.cn/iapp7463?access_token=" + self.access_token + "&v_time=" + str(int(round(time.time() * 100000))),
-                                    allow_redirects=False, cookies=self.COOKIES)
-        # 二次重定向
         act = self.session.get("https://f.yiban.cn/iapp/index?act=iapp7463", allow_redirects=False, cookies=self.COOKIES).headers["Location"]
         verifyRequest = re.findall(r"verify_request=(.*?)&", act)[0]
+        self.HEADERS.update({
+            'origin': 'https://app.uyiban.com',
+            'referer': 'https://app.uyiban.com/',
+            'Host': 'api.uyiban.com',
+            'user-agent': 'yiban'
+        })
         response = self.request(
             "https://api.uyiban.com/base/c/auth/yiban?verifyRequest=" + verifyRequest + "&CSRF=" + self.CSRF,
             cookies=self.COOKIES)
-        response=json.loads(response.text)
         self.name = response["data"]["PersonName"]
         return response
 
@@ -94,16 +93,15 @@ class Yiban:
         response=json.loads(response.text)
         return response
     
-    def nightAttendance(self, info) -> json:
+    def nightAttendance(self, reason) -> json:
         params = {
             "Code": "",
             "PhoneModel": "",
-            "SignInfo": info,
+            "SignInfo": reason,
             "OutState": "1"
         }
         response = self.request("https://api.uyiban.com/nightAttendance/student/index/signIn?CSRF=" + self.CSRF,
                                 method="post", params=params, cookies=self.COOKIES)
-        response=json.loads(response.text)
         return response
         
     def setall(self):
