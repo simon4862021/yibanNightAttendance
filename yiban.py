@@ -107,8 +107,7 @@ class Yiban:
         })
  #       response = self.request(
  #           "https://api.uyiban.com/base/c/auth/yiban?verifyRequest=" + verifyRequest + "&CSRF=" + self.CSRF,cookies=self.COOKIES)
-         response = self.request(
-            "https://api.uyiban.com/base/c/auth/yiban" + "?CSRF=" + self.CSRF,cookies=self.COOKIES)
+        response = self.request("https://api.uyiban.com/base/c/auth/yiban?CSRF=" + self.CSRF,cookies=self.COOKIES)
         self.name = response["data"]["PersonName"]
         return response
 
