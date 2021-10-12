@@ -27,6 +27,7 @@ jobs:
       - name: Install requests
         run: |
             pip install requests
+            pip3 install pycryptodome -i https://pypi.tuna.tsinghua.edu.cn/simple
       - name: 'Working'
         env:
           MOBILE: ${{ secrets.MOBILE }}
