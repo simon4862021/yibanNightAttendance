@@ -35,12 +35,7 @@ jobs:
           LNGLAT: ${{ secrets.LNGLAT }}
           ADDRESS: ${{ secrets.ADDRESS }}
         run:
-            python yiban.py
-#            echo "RESULT=$(python -c 'import yiban; print yiban.main()')" >> $GITHUB_ENV
-#         if: ${{ env.RESULT=='失败' }}
-      
-#             success()
-            
+            python yiban.py     
       - name: 'Get Date'
         if: ${{ success() }}
         run: echo "REPORT_DATE=$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')" >> $GITHUB_ENV
