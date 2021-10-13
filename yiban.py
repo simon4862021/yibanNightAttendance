@@ -155,10 +155,8 @@ def main():
         if status["code"] == 0:
             print("成功!")
             exit(0)
-            #os.environ.setdefault('Status','成功')
         else:
             print("失败!")
-            #os.environ.setdefault('Status','失败')
             exit(1)
     
 if __name__ == '__main__':
