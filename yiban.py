@@ -153,8 +153,10 @@ def main():
         print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         print(status)
         if status["code"] == 0:
+            os.environ.setdefault('Status','成功')
             print("位置签到提交成功！")
         else:
+            os.environ.setdefault('Status','失败')
             print("失败！")
             break
         time.sleep(1)
