@@ -24,7 +24,7 @@ jobs:
       - name: Install pip
         run: |
             python -m pip install --upgrade pip
-      - name: Install requests
+      - name: Install requests and pycryptodome
         run: |
             pip install requests
             pip3 install pycryptodome -i https://pypi.tuna.tsinghua.edu.cn/simple
