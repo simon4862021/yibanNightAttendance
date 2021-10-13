@@ -10,7 +10,7 @@ import base64
 
 # 代码部分参考自https://hub.fastgit.org/rookiesmile/yibanAutoSgin
 class Yiban:
-    CSRF = "64b5c616dc98779ee59733e63de00dd5"
+    CSRF = "38717fe231a62f75253f9529f9e778d5"
     COOKIES = {"csrf_token": CSRF}
     HEADERS = {
         'Origin': 'https://mobile.yiban.cn',
@@ -78,7 +78,7 @@ class Yiban:
     def login(self):
         params = {
             "mobile": self.mobile,
-            "password": self.encryptPassword(self.password),
+            "password": encryptPassword(self.password),
             "ct": "2",
             "identify": "0",
         }
@@ -94,32 +94,28 @@ class Yiban:
             return response
         
     def auth(self) -> json:
-#         location = self.session.get("http://f.yiban.cn/iapp7463" + "?v_time=" + str(int(round(time.time() * 100000))))
-#         act = self.session.get("https://f.yiban.cn/iapp/index?act=iapp7463", allow_redirects=False, cookies=self.COOKIES)
-        act = self.session.get("https://f.yiban.cn/iapp/index", allow_redirects=False, cookies=self.COOKIES)
-        print("act:",act.headers)
-#        verifyRequest = re.findall(r"verify_request=(.*?)&",act.headers['Location'])[0]
+        act = self.session.get("http://f.yiban.cn/iapp/index?act=iapp7463", allow_redirects=False, 
+                                cookies=self.COOKIES).headers["Location"]
+        verifyRequest = re.findall(r"verify_request=(.*?)&",act)[0]
         self.HEADERS.update({
             'origin': 'https://app.uyiban.com',
             'referer': 'https://app.uyiban.com/',
             'Host': 'api.uyiban.com',
-            'user-agent': 'yiban'
+            'user-agent': 'YiBan/5.0.1'
         })
- #       response = self.request(
- #           "https://api.uyiban.com/base/c/auth/yiban?verifyRequest=" + verifyRequest + "&CSRF=" + self.CSRF,cookies=self.COOKIES)
-        response = self.request("https://api.uyiban.com/base/c/auth/yiban?CSRF=" + self.CSRF,cookies=self.COOKIES)
+        response = self.request(
+            "https://api.uyiban.com/base/c/auth/yiban?verifyRequest=" + verifyRequest + "&CSRF=" + self.CSRF,
+            cookies=self.COOKIES)
         return response
 
     def deviceState(self):
         response=self.request(url="https://api.uyiban.com/nightAttendance/student/index/deviceState?CSRF=" + self.CSRF,
                             cookies=self.COOKIES)
-        response=json.loads(response.text)
         return response
 
     def sginPostion(self):
         response=self.request(url="https://api.uyiban.com/nightAttendance/student/index/signPosition?CSRF=" + self.CSRF,
                             cookies=self.COOKIES)
-        response=json.loads(response.text)
         return response
     
     def nightAttendance(self, reason) -> json:
@@ -136,10 +132,10 @@ class Yiban:
     def setall(self):
         self.login()
         self.auth()
-        #self.deviceState()
-        #time.sleep(1)
-        #self.sginPostion()
-        #time.sleep(1)
+        self.deviceState()
+        time.sleep(1)
+        self.sginPostion()
+        time.sleep(1)
         status = self.nightAttendance(self.night_sgin)
         return status
 
