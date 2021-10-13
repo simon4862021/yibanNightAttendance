@@ -17,7 +17,6 @@ class Yiban:
         'User-Agent': 'YiBan/5.0.1 Mozilla/5.0 (Linux; Android 7.1.2; V1938T Build/N2G48C; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/68.0.3440.70 Safari/537.36',
         'Referer': 'https://mobile.yiban.cn',
         'AppVersion': '5.0.1'}
-    EMAIL = {}
     
     def __init__(self, mobile, password):
         self.mobile = mobile
