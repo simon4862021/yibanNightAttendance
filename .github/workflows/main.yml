@@ -36,9 +36,16 @@ jobs:
           ADDRESS: ${{ secrets.ADDRESS }}
         run:
             python yiban.py
+#            echo "RESULT=$(python -c 'import yiban; print yiban.main()')" >> $GITHUB_ENV
+#         if: ${{ env.RESULT=='失败' }}
+      
+#             success()
+            
       - name: 'Get Date'
+        if: ${{ success() }}
         run: echo "REPORT_DATE=$(TZ=':Asia/Shanghai' date '+%Y-%m-%d %T')" >> $GITHUB_ENV
       - name: 'Send mail'
+        if: ${{ success() }}
         uses: dawidd6/action-send-mail@master
         with:
           server_address: smtp.qq.com
