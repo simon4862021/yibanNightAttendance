@@ -78,7 +78,7 @@ class Yiban:
     def login(self):
         params = {
             "mobile": self.mobile,
-            "password": encryptPassword(self.password),
+            "password": self.encryptPassword(self.password),
             "ct": "2",
             "identify": "0",
         }
