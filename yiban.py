@@ -138,7 +138,7 @@ class Yiban:
         time.sleep(1)
         status = self.nightAttendance(self.night_sgin)
         return status
-
+        
 def main():
     # 修改下方的手机号和密码，即可实现一个宿舍一起签到
     MOBILE=os.environ["MOBILE"]
@@ -154,13 +154,11 @@ def main():
         print(status)
         if status["code"] == 0:
             os.environ.setdefault('Status','成功')
-            print("位置签到提交成功！")
         else:
             os.environ.setdefault('Status','失败')
-            print("失败！")
-            break
         time.sleep(1)
+     return os.environ["Status"]
     
 if __name__ == '__main__':
-    main()
+    print(main())
     
