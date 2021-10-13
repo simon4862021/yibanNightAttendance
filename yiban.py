@@ -153,12 +153,14 @@ def main():
         print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         print(status)
         if status["code"] == 0:
-            os.environ.setdefault('Status','成功')
+            print("成功!")
+            return 1
+            #os.environ.setdefault('Status','成功')
         else:
-            os.environ.setdefault('Status','失败')
-        time.sleep(1)
-     return os.environ["Status"]
+            print("失败!")
+            #os.environ.setdefault('Status','失败')
+            return 0
     
 if __name__ == '__main__':
-    print(main())
+     main()
     
