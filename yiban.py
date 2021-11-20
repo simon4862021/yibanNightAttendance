@@ -145,7 +145,7 @@ def main():
     MOBILE2=os.environ["MOBILE2"]
     PASSWORD2=os.environ["PASSWORD2"]
     a = Yiban(MOBILE, PASSWORD)
-#    b = Yiban(MOBILE2, PASSWORD2)
+    b = Yiban(MOBILE2, PASSWORD2)
 #    c = Yiban("moblie", "password")
 #    d = Yiban("moblie", "password")
     yb_list = [a,b]
