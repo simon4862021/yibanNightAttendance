@@ -142,13 +142,13 @@ def main():
     # 修改下方的手机号和密码，即可实现一个宿舍一起签到
     MOBILE=os.environ["MOBILE"]
     PASSWORD=os.environ["PASSWORD"]
-#     MOBILE2=os.environ["MOBILE2"]
-#     PASSWORD2=os.environ["PASSWORD2"]
+    MOBILE2=os.environ["MOBILE2"]
+    PASSWORD2=os.environ["PASSWORD2"]
     a = Yiban(MOBILE, PASSWORD)
 #    b = Yiban(MOBILE2, PASSWORD2)
 #    c = Yiban("moblie", "password")
 #    d = Yiban("moblie", "password")
-    yb_list = [a]
+    yb_list = [a,b]
     for i in range(len(yb_list)):
         status = yb_list[i].setall()
         print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
