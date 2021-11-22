@@ -152,6 +152,7 @@ def main():
         if status["code"] == 0:
             print("成功!")    
         else:
+            print(status)
             print("失败!")
             exit(1)
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
