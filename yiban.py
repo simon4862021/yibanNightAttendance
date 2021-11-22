@@ -146,20 +146,17 @@ def main():
     PASSWORD2=os.environ["PASSWORD2"]
     a = Yiban(MOBILE, PASSWORD)
     b = Yiban(MOBILE2, PASSWORD2)
-#    c = Yiban("moblie", "password")
-#    d = Yiban("moblie", "password")
     yb_list = [a,b]
     for i in range(len(yb_list)):
         status = yb_list[i].setall()
-        print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
-        print(status)
         if status["code"] == 0:
-            print("成功!")
-            exit(0)
+            print("成功!")    
         else:
             print("失败!")
             exit(1)
-    
+    print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+    print(status)
+    exit(0)
 if __name__ == '__main__':
      main()
     
