@@ -32,8 +32,6 @@ jobs:
         env:
           MOBILE: ${{ secrets.MOBILE }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          MOBILE2: ${{ secrets.MOBILE2 }}
-          PASSWORD2: ${{ secrets.PASSWORD2 }}
           LNGLAT: ${{ secrets.LNGLAT }}
           ADDRESS: ${{ secrets.ADDRESS }}
         run:
